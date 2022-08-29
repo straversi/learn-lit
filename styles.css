@@ -1,0 +1,63 @@
+:root {
+  --gray-800: #434346;
+  --gray-900: #202020;
+  --gray-50: #eee;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: var(--gray-800);
+  padding: 24px;
+  margin: 0 auto;
+  max-width: 1200px;
+  line-height: 1.5;
+}
+
+h1, h2, h3 {
+  color: var(--gray-900);
+}
+h2 {
+  margin-top: 54px;
+  padding-top: 78px;
+  border-top: 1px solid var(--gray-50);
+}
+h3 {
+  margin-top: 54px;
+}
+
+#header {
+  text-align: center;
+  padding: 48px 0;
+}
+
+@media (min-width: 900px) {
+  .group {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 24px;
+  }
+}
+
+code {
+  background-color: var(--gray-50);
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+playground-ide {
+  --playground-code-font-family: 'Roboto Mono', monospace;
+  --playground-code-atom-color: rgb(108, 140, 213);
+  --playground-code-attribute-color: rgb(127, 0, 127);
+  --playground-code-builtin-color: rgb(126, 166, 86);
+  --playground-code-comment-color: rgb(0, 128, 255);
+  --playground-code-def-color: rgb(0, 0, 0);
+  --playground-code-keyword-color: rgb(90, 92, 173);
+  --playground-code-meta-color: rgb(255, 255, 0);
+  --playground-code-qualifier-color: rgb(128, 128, 128);
+  --playground-code-string-color: rgb(255, 0, 0);
+  --playground-code-string-2-color: rgb(0, 0, 0);
+  --playground-code-tag-color: rgb(63, 127, 127);
+  --playground-code-type-color: rgb(0, 0, 0);
+  --playground-code-variable-2-color: rgb(0, 0, 0);
+  --playground-code-variable-3-color: rgb(0, 0, 0)
+}

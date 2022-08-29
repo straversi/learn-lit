@@ -1,0 +1,217 @@
+<script type="module" src="/build/index.js"></script>
+<link rel="stylesheet" href="/styles.css"/>
+<!-- Roboto Mono font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+
+<body>
+
+<div id="header">
+  <h1>Learn Lit</h1>
+  <p>A cheat sheet for <a href="https://lit.dev" target="_blank">Lit</a>, the JavaScript library for building web components. By Steven Traversi.</p>
+</div>
+
+<ol>
+  <li><a>Introduction</a></li>
+  <li><a href="#create-a-component">Create a component</a></li>
+  <li><a href="#add-styles">Add styles</a></li>
+  <li><a>Properties and state</a></li>
+  <li><a>Pass data down</a></li>
+  <li><a>Pass data up</a></li>
+  <li><a>Working with children</a></li>
+  <li><a>Lifecycle callbacks</a></li>
+  <li><a>React compatability</a></li>
+</ol>
+
+<!----------------------
+-- Create a component --
+----------------------->
+
+<h2 id="create-a-component">Create a component</h2>
+
+<h3>How to create a component</h3>
+<playground-ide editable-file-system line-numbers resizable>
+  <script type="sample/ts" filename="hello-world.ts">
+import { html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
+
+@customElement('hello-world')
+export class HelloWorld extends LitElement {
+  render() {
+    return html`Hello, world!`;
+  }
+}
+  </script>
+
+  <script type="sample/html" filename="index.html">
+<script type="module" src="./hello-world.js">&lt;/script>
+
+<hello-world></hello-world>
+  </script>
+</playground-ide>
+<p>
+  <code>LitElement</code> is the base class for all components.
+  <br>
+  <code>@customElement</code> is where you define the name of your component.
+  <br>
+  <code>render</code> is where you define your component's view.
+  <br>
+  Write HTML in <code>html`...`</code>.
+</p>
+
+<h3>How to import a component</h3>
+<div class="group">
+<p>To use a component, import its file.</p>
+<playground-ide editable-file-system line-numbers resizable>
+  <script type="sample/ts" filename="hello-world.ts">
+import { html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import './another-component.js'
+
+@customElement('hello-world')
+export class HelloWorld extends LitElement {
+  render() {
+    return html`Hello, world! <another-component></another-component>`;
+  }
+}
+  </script>
+
+  <script type="sample/ts" filename="another-component.ts">
+import { html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
+
+@customElement('another-component')
+export class AnotherComponent extends LitElement {
+  render() {
+    return html`(I'm another component.)`;
+  }
+}
+  </script>
+
+  <script type="sample/html" filename="index.html">
+<script type="module" src="./hello-world.js">&lt;/script>
+
+<hello-world></hello-world>
+  </script>
+</playground-ide>
+</div>
+<h4>Important rules</h4>
+<p class="important">Components are global HTML elements, you can't have more than one with the same name on a page. People are working on that though!</p>
+<p class="important">Elements must have dashes in the name</p>
+
+<!--------------
+-- Add styles --
+--------------->
+
+<h2 id="add-styles">Add styles</h2>
+
+<h3>How to add styles</h3>
+<div class="group">
+<p>Add styles by defining the `static styels` property. Write CSS in the `css` tag.</p>
+<playground-ide editable-file-system line-numbers resizable>
+  <script type="sample/ts" filename="my-element.ts">
+import { html, LitElement, css } from 'lit';
+import { customElement } from 'lit/decorators.js';
+
+@customElement('my-element')
+export class MyElement extends LitElement {
+  render() {
+    return html`<p>I'm blue</p><div>I'm red</div>`;
+  }
+
+  static styles = css`
+    p {
+      color: blue;
+    }
+    div {
+      color: red;
+    }
+  `;
+}
+  </script>
+
+  <script type="sample/html" filename="index.html">
+<script type="module" src="./my-element.js">&lt;/script>
+
+<my-element></my-element>
+  </script>
+</playground-ide>
+</div>
+
+<h3>Styles are scoped</h3>
+<div class="group">
+<p>Styles <i>only</i> apply to the current element. That means you can feel free to use super generic selectors that you'd normally have to make up class names for.</p>
+<playground-ide editable-file-system line-numbers resizable>
+  <script type="sample/ts" filename="my-element.ts">
+import { html, LitElement, css } from 'lit';
+import { customElement } from 'lit/decorators.js';
+
+@customElement('my-element')
+export class MyElement extends LitElement {
+  render() {
+    return html`<p>I'm blue</p>`;
+  }
+
+  static styles = css`
+    p {
+      color: blue;
+    }
+  `;
+}
+  </script>
+
+  <script type="sample/html" filename="index.html">
+<script type="module" src="./my-element.js">&lt;/script>
+
+<my-element></my-element>
+<p>I'm also a p, but I'm not blue.</p>
+  </script>
+</playground-ide>
+</div>
+
+<h3>Add classes</h3>
+<div class="group">
+<p>To conditionally apply styles, use `classMap`.</p>
+<playground-ide editable-file-system line-numbers resizable>
+  <script type="sample/ts" filename="my-element.ts">
+import { html, LitElement, css } from 'lit';
+import { customElement, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+
+@customElement('my-element')
+export class MyElement extends LitElement {
+  @state() counter = 0
+
+  firstUpdated() {
+    setInterval(() =>  this.counter += 1 , 1000);
+  }
+
+  render() {
+    const classes = {
+      red: this.counter % 2 === 0,
+      blue: this.counter % 2 === 1
+    };
+    return html`<p class=${classMap(classes)}>Hello!</p>`;
+  }
+
+  static styles = css`
+    .red {
+      color: red;
+    }
+    .blue {
+      color: blue;
+    }
+  `;
+}
+  </script>
+
+  <script type="sample/html" filename="index.html">
+<script type="module" src="./my-element.js">&lt;/script>
+
+<my-element></my-element>
+  </script>
+</playground-ide>
+</div>
+
+</body>
