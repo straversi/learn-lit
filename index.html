@@ -38,8 +38,8 @@
   <li><a href="#create-a-component">Create a component</a></li>
   <li><a href="#add-styles">Add styles</a></li>
   <li><a href="#properties-and-state">Properties and state</a></li>
-  <li><a>Event handlers</a></li>
-  <li><a>Pass data down</a></li>
+  <li><a href="#event-handlers">Event handlers</a></li>
+  <li><a href="#pass-data-down">Pass data down</a></li>
   <li><a>Pass data up</a></li>
   <li><a>Working with children</a></li>
   <li><a>Lifecycle callbacks</a></li>
@@ -238,6 +238,10 @@ export class MyElement extends LitElement {
 </playground-ide>
 </div>
 
+<!------------------------
+-- Properties and State --
+------------------------->
+
 <h2 id="properties-and-state">Properties and State</h2>
 
 <h3>Define state</h3>
@@ -313,6 +317,149 @@ export class NumberDisplay extends LitElement {
 <script type="module" src="./index.js">&lt;/script>
 
 <counter-app></counter-app>
+  </script>
+</playground-ide>
+</div>
+
+<!------------------
+-- Event handlers --
+------------------->
+
+<h2 id="event-handlers">Event handlers</h2>
+
+<h3>Add an event handler</h3>
+<div class="group">
+<p>
+  Add an event handler to a component using <code>@click=${handler}</code>. This is the same as adding an event listener like this: <code>el.addEventListener('click', handler)</code>. The handler will be called with the event object as the first argument.
+</p>
+<playground-ide editable-file-system line-numbers resizable>
+  <script type="sample/ts" filename="my-counter.ts">
+import { html, LitElement } from 'lit';
+import { customElement, state } from 'lit/decorators.js';
+
+@customElement('my-counter')
+export class MyCounter extends LitElement {
+  @state() count = 0;
+
+  render() {
+    return html`
+      <p>Clicks: ${this.count}</p>
+      <button @click=${this.increment}> + </button>
+    `;
+  }
+
+  increment() {
+    this.count++;
+  }
+}
+  </script>
+
+  <script type="sample/html" filename="index.html">
+<script type="module" src="./my-counter.js">&lt;/script>
+
+<my-counter></my-counter>
+  </script>
+</playground-ide>
+</div>
+
+<h3>Add an event handler to the component itself</h3>
+<div class="group">
+<p>
+  Add event handlers to the component itself in the <code>constructor()</code> method.
+</p>
+<playground-ide editable-file-system line-numbers resizable>
+  <script type="sample/ts" filename="my-counter.ts">
+import { html, css, LitElement } from 'lit';
+import { customElement, state } from 'lit/decorators.js';
+
+@customElement('my-counter')
+export class MyCounter extends LitElement {
+  @state() count = 0;
+
+  constructor() {
+    super();
+    this.addEventListener('mouseover', this.increment);
+  }
+
+  render() {
+    return html`
+      <p>Mouseover to increment</p>
+      <p>Count: ${this.count}</p>
+    `;
+  }
+
+  increment() {
+    this.count++;
+  }
+}
+  </script>
+
+  <script type="sample/html" filename="index.html">
+<script type="module" src="./my-counter.js">&lt;/script>
+
+<my-counter></my-counter>
+  </script>
+</playground-ide>
+</div>
+
+<!------------------
+-- Pass Data Down --
+------------------->
+
+<h2 id="pass-data-down">Pass Data Down</h2>
+
+<h3>Properties</h3>
+<div class="group">
+<p>
+  Pass data to child elements using property bindings, like this: <code>.name=${"Steven"}</code>. The value can be any expression.
+  <br><br>
+  For boolean properties, use a question mark instead of a period, like this: <code>?programmer=${true}</code>.
+  <br><br>
+  You can only bind to properties declared with <code>@property</code>, not <code>@state</code>.
+</p>
+<playground-ide editable-file-system line-numbers resizable>
+  <script type="sample/ts" filename="my-wallet.ts">
+import { html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import './id-card.js';
+
+@customElement('my-wallet')
+export class MyWallet extends LitElement {
+  render() {
+    return html`
+      <id-card .name=${"Steven"} .age=${27} ?programmer=${true}></id-card>
+    `;
+  }
+}
+  </script>
+
+  <script type="sample/ts" filename="id-card.ts">
+import { html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+
+@customElement('id-card')
+export class IdCard extends LitElement {
+  @property({ type: String }) name: string
+  @property({ type: Number }) age: number
+  @property({ type: Boolean }) programmer: boolean
+
+  render() {
+    return html`
+      <h3>${this.name}</h3>
+      <p>Age: ${this.age}</p>
+      <label>
+        <input disabled type="checkbox" ?checked=${this.programmer}>
+        Programmer
+      </label>
+    `;
+  }
+}
+  </script>
+
+  <script type="sample/html" filename="index.html">
+<script type="module" src="./my-wallet.js">&lt;/script>
+
+<my-wallet></my-wallet>
   </script>
 </playground-ide>
 </div>

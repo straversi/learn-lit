@@ -90,6 +90,7 @@ code {
   font-family: 'Roboto Mono', monospace;
   font-size: 0.9em;
   color: var(--gray-800);
+  white-space: nowrap;
 }
 
 playground-ide {
