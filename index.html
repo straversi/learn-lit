@@ -22,7 +22,7 @@
   <li><a>Introduction</a></li>
   <li><a href="#create-a-component">Create a component</a></li>
   <li><a href="#add-styles">Add styles</a></li>
-  <li><a>Properties and state</a></li>
+  <li><a href="#properties-and-state">Properties and state</a></li>
   <li><a>Pass data down</a></li>
   <li><a>Pass data up</a></li>
   <li><a>Working with children</a></li>
@@ -37,6 +37,16 @@
 <h2 id="create-a-component">Create a component</h2>
 
 <h3>How to create a component</h3>
+<div class="group">
+<p>
+  <code>LitElement</code> is the base class for all components.
+  <br><br>
+  <code>@customElement</code> is where you define the name of your component.
+  <br><br>
+  <code>render</code> is where you define your component's view.
+  <br><br>
+  Write HTML in <code>html`...`</code>.
+</p>
 <playground-ide editable-file-system line-numbers resizable>
   <script type="sample/ts" filename="hello-world.ts">
 import { html, LitElement } from 'lit';
@@ -56,15 +66,7 @@ export class HelloWorld extends LitElement {
 <hello-world></hello-world>
   </script>
 </playground-ide>
-<p>
-  <code>LitElement</code> is the base class for all components.
-  <br>
-  <code>@customElement</code> is where you define the name of your component.
-  <br>
-  <code>render</code> is where you define your component's view.
-  <br>
-  Write HTML in <code>html`...`</code>.
-</p>
+</div>
 
 <h3>How to import a component</h3>
 <div class="group">
@@ -216,6 +218,85 @@ export class MyElement extends LitElement {
 <script type="module" src="./my-element.js">&lt;/script>
 
 <my-element></my-element>
+  </script>
+</playground-ide>
+</div>
+
+<h2 id="properties-and-state">Properties and State</h2>
+
+<h3>Define state</h3>
+<div class="group">
+<p>
+  Use <code>@state</code> to define a state variable.
+  <br><br>
+  When the state changes, Lit will re-render any part of the component that references the state.
+</p>
+<playground-ide editable-file-system line-numbers resizable>
+  <script type="sample/ts" filename="my-counter.ts">
+import { html, LitElement } from 'lit';
+import { customElement, state } from 'lit/decorators.js';
+
+@customElement('my-counter')
+export class MyCounter extends LitElement {
+  @state() count = 0;
+
+  render() {
+    return html`
+      <p>Clicks: ${this.count}</p>
+      <button @click=${() => this.count++}> + </button>
+    `;
+  }
+}
+  </script>
+
+  <script type="sample/html" filename="index.html">
+<script type="module" src="./my-counter.js">&lt;/script>
+
+<my-counter></my-counter>
+  </script>
+</playground-ide>
+</div>
+
+<h3>Define a property</h3>
+<div class="group">
+<p>
+  Use <code>@property</code> to define a state variable that can be accessed externally.
+  <br><br>
+  When the property changes, Lit will re-render any part of the component that references the property (just like state).
+</p>
+<playground-ide editable-file-system line-numbers resizable>
+  <script type="sample/ts" filename="index.ts">
+import { html, LitElement } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+
+@customElement('counter-app')
+export class CounterApp extends LitElement {
+  @state() count = 0;
+
+  render() {
+    return html`
+      <number-display .number=${this.count}></number-display>
+      <button @click=${() => this.count++}> + </button>
+    `;
+  }
+}
+
+@customElement('number-display')
+export class NumberDisplay extends LitElement {
+  @property({ type: Number }) number = 0;
+
+  render() {
+    return html`
+      <code>${this.number}</code>
+    `;
+  }
+}
+  </script>
+
+  <script type="sample/html" filename="index.html">
+<script type="module" src="./index.js">&lt;/script>
+
+<counter-app></counter-app>
   </script>
 </playground-ide>
 </div>
