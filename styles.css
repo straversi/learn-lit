@@ -49,9 +49,6 @@ a:not([href]) {
   color: var(--gray-400);
 }
 
-h1, h2, h3 {
-  color: var(--gray-800);
-}
 h1 {
   font-size: 2.5em;
   font-weight: 800;
@@ -59,7 +56,7 @@ h1 {
 h2 {
   margin-top: 90px;
   padding-top: 78px;
-  border-top: 1px solid var(--gray-50);
+  border-top: 2px solid var(--gray-100);
   font-size: 2em;
   text-align: center;
 }
@@ -82,6 +79,10 @@ h3 {
   }
 }
 
+.group p {
+  margin-bottom: 30px;
+}
+
 code {
   background-color: var(--yellow-300);
   border-radius: 4px;
@@ -94,6 +95,8 @@ code {
 playground-ide {
   --playground-code-font-family: 'Roboto Mono', monospace;
   --playground-highlight-color: var(--primary-800);
+  --playground-code-linenumber-color: var(--gray-300);
+  --playground-tab-bar-background: var(--gray-100);
   --playground-code-atom-color: rgb(108, 140, 213);
   --playground-code-attribute-color: rgb(127, 0, 127);
   --playground-code-builtin-color: rgb(126, 166, 86);

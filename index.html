@@ -1,5 +1,9 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <title>Learn Lit</title>
+  <meta name="description" content="A cheat sheet for learning the basics of Lit, the JavaScript library for building web components.">
   <script type="module" src="/build/index.js"></script>
 
   <link rel="stylesheet" href="/styles.css"/>
@@ -10,19 +14,31 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="/images/flame-favicon.svg">
+  <link rel="mask-icon" href="/images/flame-favicon.svg" color="#324fff">
+
+  <meta property="og:url" content="https://lit.how/">
+  <meta property="og:title" content="Learn Lit">
+  <meta property="og:description" content="A cheat sheet for learning the basics of Lit, the JavaScript library for building web components.">
+  <meta property="og:site_name" content="lit.how">
+  <meta property="og:image" content="https://lit.how/images/screenshot.png">
+  <meta property="og:image:alt" content="Lit Logo">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@straversi1">
 </head>
 <body>
 
 <div id="header">
   <h1>Learn Lit</h1>
-  <p>A cheat sheet for <a href="https://lit.dev" target="_blank">Lit</a>, the JavaScript library for building web components. By Steven Traversi.</p>
+  <p>A cheat sheet for learning the basics of <a href="https://lit.dev">Lit</a>, the JavaScript library for building web components. By <a href="https://twitter.com/straversi1">Steven Traversi</a>.</p>
 </div>
 
 <ol>
-  <li><a>Introduction</a></li>
   <li><a href="#create-a-component">Create a component</a></li>
   <li><a href="#add-styles">Add styles</a></li>
   <li><a href="#properties-and-state">Properties and state</a></li>
+  <li><a>Event handlers</a></li>
   <li><a>Pass data down</a></li>
   <li><a>Pass data up</a></li>
   <li><a>Working with children</a></li>
@@ -36,7 +52,7 @@
 
 <h2 id="create-a-component">Create a component</h2>
 
-<h3>How to create a component</h3>
+<h3>Create a component</h3>
 <div class="group">
 <p>
   <code>LitElement</code> is the base class for all components.
@@ -68,7 +84,7 @@ export class HelloWorld extends LitElement {
 </playground-ide>
 </div>
 
-<h3>How to import a component</h3>
+<h3>Import a component</h3>
 <div class="group">
 <p>To use a component, import its file.</p>
 <playground-ide editable-file-system line-numbers resizable>
@@ -114,7 +130,7 @@ export class AnotherComponent extends LitElement {
 
 <h2 id="add-styles">Add styles</h2>
 
-<h3>How to add styles</h3>
+<h3>Add styles</h3>
 <div class="group">
 <p>Add styles by defining the <code>static styles</code> property. Write CSS in the <code>css</code> tag.</p>
 <playground-ide editable-file-system line-numbers resizable>
@@ -302,3 +318,4 @@ export class NumberDisplay extends LitElement {
 </div>
 
 </body>
+</html>
