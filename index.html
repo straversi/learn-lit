@@ -35,22 +35,19 @@
 </div>
 
 <ol>
-  <li><a href="#create-a-component">Create a component</a></li>
-  <li><a href="#add-styles">Add styles</a></li>
+  <li><a href="#component-definition">Component definition</a></li>
+  <li><a href="#styles">Styles</a></li>
   <li><a href="#properties-and-state">Properties and state</a></li>
   <li><a href="#event-handlers">Event handlers</a></li>
   <li><a href="#pass-data-down">Pass data down</a></li>
-  <li><a>Pass data up</a></li>
-  <li><a>Working with children</a></li>
-  <li><a>Lifecycle callbacks</a></li>
-  <li><a>React compatability</a></li>
+  <li><a href="#pass-data-up">Pass data up</a></li>
 </ol>
 
 <!----------------------
 -- Create a component --
 ----------------------->
 
-<h2 id="create-a-component">Create a component</h2>
+<h2 id="component-definition">Component definition</h2>
 
 <h3>Create a component</h3>
 <div class="group">
@@ -71,7 +68,7 @@ import { customElement } from 'lit/decorators.js';
 @customElement('hello-world')
 export class HelloWorld extends LitElement {
   render() {
-    return html`Hello, world!`;
+    return html`<p>Hello, world!</p>`;
   }
 }
   </script>
@@ -120,15 +117,15 @@ export class AnotherComponent extends LitElement {
   </script>
 </playground-ide>
 </div>
-<h4>Important rules</h4>
+<h4>👉 Important rules</h4>
 <p class="important">Components are global HTML elements, you can't have more than one with the same name on a page. People are working on that though!</p>
-<p class="important">Elements must have dashes in the name</p>
+<p class="important">Components must have dashes in their name (defined using <code>@customElement</code>).</p>
 
 <!--------------
 -- Add styles --
 --------------->
 
-<h2 id="add-styles">Add styles</h2>
+<h2 id="styles">Styles</h2>
 
 <h3>Add styles</h3>
 <div class="group">
@@ -460,6 +457,75 @@ export class IdCard extends LitElement {
 <script type="module" src="./my-wallet.js">&lt;/script>
 
 <my-wallet></my-wallet>
+  </script>
+</playground-ide>
+</div>
+
+<!------------------
+-- Pass Data Up --
+------------------->
+
+<h2 id="pass-data-up">Pass Data Up</h2>
+
+<h3>Events</h3>
+<div class="group">
+<p>
+  Pass data to ancestor elements using events. To emit an event, use <code>this.dispatchEvent</code>.
+  <br><br>
+  <code>dispatchEvent</code> takes an event object as the first argument.
+  <br><br>
+  Construct an event object like this: <code>new CustomEvent('event-name', { detail: data, bubbles: true })</code>.
+  <br><br>
+  Provide data you want to pass to ancestors in the <code>detail</code> property of the event.
+  <br><br>
+  Ancestors can react to the event by adding an event listener to the component, like this: <code>@event-name=${e => this.handler(e)}</code>.
+</p>
+<playground-ide editable-file-system line-numbers resizable>
+  <script type="sample/ts" filename="score-board.ts">
+import { html, LitElement } from 'lit';
+import { customElement, state } from 'lit/decorators.js';
+import './game-player.js';
+
+@customElement('score-board')
+export class ScoreBoard extends LitElement {
+  @state() playerOneScore = 0;
+  @state() playerTwoScore = 0;
+
+  render() {
+    return html`
+      <h1>${this.playerOneScore} - ${this.playerTwoScore}</h1>
+      <h2>Player 1</h2>
+      <game-player @score=${e => this.playerOneScore += e.detail}></game-player>
+      <h2>Player 2</h2>
+      <game-player @score=${e => this.playerTwoScore += e.detail}></game-player>
+    `;
+  }
+}
+  </script>
+
+  <script type="sample/ts" filename="game-player.ts">
+import { html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+
+@customElement('game-player')
+export class GamePlayer extends LitElement {
+  render() {
+    return html`
+      <button @click=${() => this.handleScore(7)}>Touchdown!</button>
+      <button @click=${() => this.handleScore(3)}>Field goal!</button>
+    `;
+  }
+
+  handleScore(points) {
+    this.dispatchEvent(new CustomEvent('score', { detail: points, bubbles: true }));
+  }
+}
+  </script>
+
+  <script type="sample/html" filename="index.html">
+<script type="module" src="./score-board.js">&lt;/script>
+
+<score-board></score-board>
   </script>
 </playground-ide>
 </div>
